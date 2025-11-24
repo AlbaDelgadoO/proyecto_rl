@@ -10,8 +10,8 @@ from trex_env import DinoEnv
 # Crear entorno con Monitor para TensorBoard
 # ======================================================
 def make_env():
-    env = DinoEnv()      # <--- tu entorno
-    env = Monitor(env)   # necesario para registrar métricas
+    env = DinoEnv()      
+    env = Monitor(env)   
     return env
 
 # ======================================================
