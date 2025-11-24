@@ -47,11 +47,9 @@ class Dinosaur:
         self.run_img = RUNNING
         self.jump_img = JUMPING
 
-
         self.dino_duck = False
         self.dino_run = True
         self.dino_jump = False
-
 
         self.step_index = 0
         self.jump_vel = self.JUMP_VEL
@@ -59,7 +57,6 @@ class Dinosaur:
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
-
 
     def update(self, action):
         # acción: 0 = nada, 1 = saltar, 2 = agacharse
@@ -76,7 +73,6 @@ class Dinosaur:
             self.dino_run = True
             self.dino_jump = False
 
-
         if self.dino_duck:
             self.duck()
         elif self.dino_run:
@@ -84,10 +80,8 @@ class Dinosaur:
         elif self.dino_jump:
             self.jump()
 
-
         if self.step_index >= 10:
             self.step_index = 0
-
 
     def duck(self):
         self.image = self.duck_img[self.step_index // 5]
@@ -96,14 +90,12 @@ class Dinosaur:
         self.dino_rect.y = self.Y_POS_DUCK
         self.step_index += 1
 
-
     def run(self):
         self.image = self.run_img[self.step_index // 5]
         self.dino_rect = self.image.get_rect()
         self.dino_rect.x = self.X_POS
         self.dino_rect.y = self.Y_POS
         self.step_index += 1
-
 
     def jump(self):
         self.image = self.jump_img
@@ -114,11 +106,8 @@ class Dinosaur:
             self.dino_jump = False
             self.jump_vel = self.JUMP_VEL
 
-
     def draw(self, screen):
         screen.blit(self.image, (self.dino_rect.x, self.dino_rect.y))
-
-
 
 
 class Obstacle:
@@ -128,17 +117,13 @@ class Obstacle:
         self.rect = self.image[self.type].get_rect()
         self.rect.x = SCREEN_WIDTH
 
-
     def update(self, game_speed, obstacles):
         self.rect.x -= game_speed
         if self.rect.x < -self.rect.width:
             obstacles.remove(self)
 
-
     def draw(self, screen):
         screen.blit(self.image[self.type], self.rect)
-
-
 
 
 class SmallCactus(Obstacle):
@@ -148,15 +133,11 @@ class SmallCactus(Obstacle):
         self.rect.y = 325
 
 
-
-
 class LargeCactus(Obstacle):
     def __init__(self, image):
         self.type = random.randint(0, 2)
         super().__init__(image, self.type)
         self.rect.y = 300
-
-
 
 
 class Bird(Obstacle):
@@ -166,7 +147,6 @@ class Bird(Obstacle):
         self.rect.y = 250
         self.index = 0
 
-
     def draw(self, screen):
         if self.index >= 9:
             self.index = 0
@@ -174,14 +154,11 @@ class Bird(Obstacle):
         self.index += 1
 
 
-
-
 # ------------------------
 # Entorno Gymnasium
 # ------------------------
 class DinoEnv(gym.Env):
     metadata = {"render_modes": ["human"], "render_fps": 30}
-
 
     def __init__(self):
         super(DinoEnv, self).__init__()
@@ -194,26 +171,21 @@ class DinoEnv(gym.Env):
         self.clock = pygame.time.Clock()
         self.reset()
 
-
     def reset(self, seed=None, options=None):
         self.player = Dinosaur()
         self.obstacles = []
         self.game_speed = 20
         self.points = 0
 
-
         # posiciones del suelo
         self.x_pos_bg = 0
         self.y_pos_bg = 380
 
-
         obs = self._get_obs()
         return obs, {}
 
-
     def step(self, action):
         self.player.update(action)
-
 
         # Generar obstáculos
         if len(self.obstacles) == 0:
@@ -225,10 +197,8 @@ class DinoEnv(gym.Env):
             else:
                 self.obstacles.append(Bird(BIRD))
 
-
         reward = 1
         done = False
-
 
         for obstacle in list(self.obstacles):
             obstacle.update(self.game_speed, self.obstacles)
@@ -236,15 +206,12 @@ class DinoEnv(gym.Env):
                 reward = -100
                 done = True
 
-
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
 
-
         obs = self._get_obs()
         return obs, reward, done, False, {}
-
 
     def _get_obs(self):
         # Dino Y, Dino JumpVel, primer obstáculo X, tipo obstáculo
@@ -264,7 +231,6 @@ class DinoEnv(gym.Env):
     def render(self, mode="human"):
         SCREEN.fill((255, 255, 255))
 
-
         image_width = BG.get_width()
         SCREEN.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         SCREEN.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
@@ -273,15 +239,12 @@ class DinoEnv(gym.Env):
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed
 
-
         self.player.draw(SCREEN)
         for obstacle in self.obstacles:
             obstacle.draw(SCREEN)
 
-
         pygame.display.update()
         self.clock.tick(self.metadata["render_fps"])
-
 
     def close(self):
         pygame.quit()
