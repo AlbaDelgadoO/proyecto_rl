@@ -8,29 +8,37 @@ import numpy as np
 # Inicializar pygame
 pygame.init()
 
+# Carpeta base de assets relativa al proyecto
+ASSET_BASE = os.path.join(os.path.dirname(__file__), "..", "Assets")
+
+# Subcarpetas
+DINO_DIR = os.path.join(ASSET_BASE, "Dino")
+CACTUS_DIR = os.path.join(ASSET_BASE, "Cactus")
+BIRD_DIR = os.path.join(ASSET_BASE, "Bird")
+OTHER_DIR = os.path.join(ASSET_BASE, "Other")
+
 # Constantes globales
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-RUNNING = [pygame.image.load(os.path.join("Assets/Dino", "DinoRun1.png")),
-           pygame.image.load(os.path.join("Assets/Dino", "DinoRun2.png"))]
-JUMPING = pygame.image.load(os.path.join("Assets/Dino", "DinoJump.png"))
-DUCKING = [pygame.image.load(os.path.join("Assets/Dino", "DinoDuck1.png")),
-           pygame.image.load(os.path.join("Assets/Dino", "DinoDuck2.png"))]
+RUNNING = [pygame.image.load(os.path.join(DINO_DIR, "DinoRun1.png")),
+           pygame.image.load(os.path.join(DINO_DIR, "DinoRun2.png"))]
+JUMPING = pygame.image.load(os.path.join(DINO_DIR, "DinoJump.png"))
+DUCKING = [pygame.image.load(os.path.join(DINO_DIR, "DinoDuck1.png")),
+           pygame.image.load(os.path.join(DINO_DIR, "DinoDuck2.png"))]
+SMALL_CACTUS = [pygame.image.load(os.path.join(CACTUS_DIR, "SmallCactus1.png")),
+                pygame.image.load(os.path.join(CACTUS_DIR, "SmallCactus2.png")),
+                pygame.image.load(os.path.join(CACTUS_DIR, "SmallCactus3.png"))]
+LARGE_CACTUS = [pygame.image.load(os.path.join(CACTUS_DIR, "LargeCactus1.png")),
+                pygame.image.load(os.path.join(CACTUS_DIR, "LargeCactus2.png")),
+                pygame.image.load(os.path.join(CACTUS_DIR, "LargeCactus3.png"))]
 
-SMALL_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus1.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus2.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "SmallCactus3.png"))]
-LARGE_CACTUS = [pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus1.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus2.png")),
-                pygame.image.load(os.path.join("Assets/Cactus", "LargeCactus3.png"))]
+BIRD = [pygame.image.load(os.path.join(BIRD_DIR, "Bird1.png")),
+        pygame.image.load(os.path.join(BIRD_DIR, "Bird2.png"))]
 
-BIRD = [pygame.image.load(os.path.join("Assets/Bird", "Bird1.png")),
-        pygame.image.load(os.path.join("Assets/Bird", "Bird2.png"))]
-
-CLOUD = pygame.image.load(os.path.join("Assets/Other", "Cloud.png"))
-BG = pygame.image.load(os.path.join("Assets/Other", "Track.png"))
+CLOUD = pygame.image.load(os.path.join(OTHER_DIR, "Cloud.png"))
+BG = pygame.image.load(os.path.join(OTHER_DIR, "Track.png"))
 
 
 # ------------------------

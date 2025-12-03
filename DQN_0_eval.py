@@ -1,14 +1,17 @@
 import pygame
 from stable_baselines3 import DQN
 import numpy as np
+import os
 
-from trex_env import DinoEnv
+from Classic.trex_env import DinoEnv
 
 # ----------------------------------------
 # Cargar modelo entrenado
 # ----------------------------------------
-model_path = "DQN_0_model.zip"
+# Ruta al modelo dentro de Classic
+model_path = os.path.join("Classic", "DQN_fixed_model")
 model = DQN.load(model_path)
+
 
 # ----------------------------------------
 # Crear entorno para render
