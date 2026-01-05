@@ -4,14 +4,14 @@ from stable_baselines3 import PPO
 from stable_baselines3.common.evaluation import evaluate_policy
 from stable_baselines3.common.monitor import Monitor
 
-from trex_env import DinoEnv  # tu environment
+from trex_env2 import DinoEnv  
 
 # -----------------------------
 # Directorios para modelos y logs
 # -----------------------------
 ALGORITHM = "PPO"
-models_dir = f"models/{ALGORITHM}"
-log_dir = "logs"
+models_dir = "PPO_1"
+log_dir = "PPO_1_tensorboard"
 
 os.makedirs(models_dir, exist_ok=True)
 os.makedirs(log_dir, exist_ok=True)

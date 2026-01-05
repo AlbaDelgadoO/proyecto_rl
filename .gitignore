@@ -1,0 +1,11 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Tensorboard (opcional, si no quieres subir logs)
+# *_tensorboard/
+
+# ZIP grandes de modelos (opcional, si no quieres subirlos)
+# *.zip
