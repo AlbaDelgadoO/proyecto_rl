@@ -4,7 +4,7 @@ from stable_baselines3 import DQN
 from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3.common.monitor import Monitor
 
-from trex_env import DinoEnv
+from trex_env2 import DinoEnv
 
 # ======================================================
 # Crear entorno con Monitor
@@ -18,8 +18,8 @@ def make_env():
 # Configuración
 # ======================================================
 n_steps = 300_000
-checkpoint_dir = "./DQN_0/"
-tensorboard_log = "./DQN_0_tensorboard/"
+checkpoint_dir = "./DQN_1/"
+tensorboard_log = "./DQN_1_tensorboard/"
 
 os.makedirs(checkpoint_dir, exist_ok=True)
 
@@ -63,7 +63,7 @@ model = DQN(
 checkpoint_callback = CheckpointCallback(
     save_freq=20_000,
     save_path=checkpoint_dir,
-    name_prefix="DQN_0"
+    name_prefix="DQN_1"
 )
 
 # ======================================================
