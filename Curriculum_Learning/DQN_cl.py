@@ -4,7 +4,7 @@ from stable_baselines3 import DQN
 from stable_baselines3.common.callbacks import CheckpointCallback
 from stable_baselines3.common.monitor import Monitor
 
-from trex_env_cl import DinoEnv
+from trex_env_cl2 import DinoEnv
 
 # ======================================================
 # Crear entorno con Monitor y fase de curriculum
@@ -17,8 +17,8 @@ def make_env(phase=1):
 # ======================================================
 # Configuración
 # ======================================================
-checkpoint_dir = "./DQN_curriculum/"
-tensorboard_log = "./DQN_curriculum_tensorboard/"
+checkpoint_dir = "./DQN_0_curriculum/"
+tensorboard_log = "./DQN_0_curriculum_tensorboard/"
 
 os.makedirs(checkpoint_dir, exist_ok=True)
 

@@ -21,7 +21,8 @@ from trex_env_cl import DinoEnv
 # Elige qué modelo cargar:
 # model_path = os.path.join("Curriculum_Learning", "DQN_curriculum", "phase1_final")
 # model_path = os.path.join("Curriculum_Learning", "DQN_curriculum", "phase2_final")
-model_path = os.path.join("Curriculum_Learning", "DQN_curriculum", "phase3_final")  # Modelo final
+# model_path = os.path.join("Curriculum_Learning", "DQN_curriculum", "phase3_final")  # Modelo final
+model_path = os.path.join("Curriculum_Learning", "DQN_0_curriculum", "phase3_final")  # Modelo final
 
 model = DQN.load(model_path)
 
