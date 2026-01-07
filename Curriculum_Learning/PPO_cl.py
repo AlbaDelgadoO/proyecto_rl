@@ -7,7 +7,7 @@ from stable_baselines3.common.monitor import Monitor
 from trex_env_cl2 import DinoEnv
 
 # ======================================================
-# Crear entorno con Monitor y fase de curriculum
+# Create environment with Monitor and curriculum phase
 # ======================================================
 def make_env(phase=1):
     env = DinoEnv(curriculum_phase=phase)
@@ -15,7 +15,7 @@ def make_env(phase=1):
     return env
 
 # ======================================================
-# Configuración
+# Configuration
 # ======================================================
 checkpoint_dir = "./PPO_2/"
 tensorboard_log = "./PPO_2_tensorboard/"
@@ -23,7 +23,7 @@ tensorboard_log = "./PPO_2_tensorboard/"
 os.makedirs(checkpoint_dir, exist_ok=True)
 
 # ======================================================
-# Phase 1: Menos obstáculos (150k steps)
+# Phase 1: Less obstacles (150k steps)
 # ======================================================
 print("=" * 50)
 print("PHASE 1: Less obstacles")
@@ -58,7 +58,7 @@ model.save(f"{checkpoint_dir}/phase1_final")
 env.close()
 
 # ======================================================
-# Phase 2: Entorno original (150k steps)
+# Phase 2: Original environment (150k steps)
 # ======================================================
 print("=" * 50)
 print("PHASE 2: Original environment")
@@ -78,7 +78,7 @@ model.save(f"{checkpoint_dir}/phase2_final")
 env.close()
 
 # ======================================================
-# Phase 3: Birds a diferentes alturas (150k steps)
+# Phase 3: Birds at different heights (150k steps)
 # ======================================================
 print("=" * 50)
 print("PHASE 3: Birds at different heights")
@@ -98,5 +98,5 @@ model.save(f"{checkpoint_dir}/phase3_final")
 env.close()
 
 print("=" * 50)
-print("Curriculum Learning completado!")
+print("Curriculum Learning completed!")
 print("=" * 50)

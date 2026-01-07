@@ -5,11 +5,11 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 
-# Inicializar pygame
+# Initialize pygame
 pygame.init()
 
 # ----------------------------------------------------------------
-# Configuración de Rutas y Assets
+# Configuration of Paths and Assets
 # ----------------------------------------------------------------
 ASSET_BASE = os.path.join(os.path.dirname(__file__), "..", "Assets")
 
@@ -22,7 +22,7 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# Cargar imágenes
+# Load images
 RUNNING = [pygame.image.load(os.path.join(DINO_DIR, "DinoRun1.png")),
            pygame.image.load(os.path.join(DINO_DIR, "DinoRun2.png"))]
 JUMPING = pygame.image.load(os.path.join(DINO_DIR, "DinoJump.png"))
@@ -44,7 +44,7 @@ BG = pygame.image.load(os.path.join(OTHER_DIR, "Track.png"))
 
 
 # ----------------------------------------------------------------
-# Clases del Juego
+# Game Classes
 # ----------------------------------------------------------------
 class Dinosaur:
     X_POS = 80
@@ -69,7 +69,7 @@ class Dinosaur:
         self.dino_rect.y = self.Y_POS
 
     def update(self, action):
-        # acción: 0 = nada, 1 = saltar, 2 = agacharse
+        # action: 0 = do nothing, 1 = jump, 2 = duck
         if action == 1 and not self.dino_jump:
             self.dino_duck = False
             self.dino_run = False
@@ -154,7 +154,7 @@ class Bird(Obstacle):
     def __init__(self, image, height_variation=False):
         self.type = 0
         super().__init__(image, self.type)
-        # Lógica para variar altura
+        # LLogic to vary height
         if height_variation:
             self.rect.y = random.choice([200, 250, 300])
         else:
@@ -169,7 +169,7 @@ class Bird(Obstacle):
 
 
 # ----------------------------------------------------------------
-# Entorno Gymnasium (Curriculum Learning)
+# Gymnasium Environment (Curriculum Learning)
 # ----------------------------------------------------------------
 class DinoEnv(gym.Env):
     metadata = {"render_modes": ["human"], "render_fps": 30}
@@ -177,9 +177,8 @@ class DinoEnv(gym.Env):
     def __init__(self, curriculum_phase=1):
         super(DinoEnv, self).__init__()
         self.curriculum_phase = curriculum_phase
-        self.action_space = spaces.Discrete(3)  # 0: nada, 1: saltar, 2: agacharse
+        self.action_space = spaces.Discrete(3)  # 0: do nothing, 1: jump, 2: duck
         
-        # Espacio de Observación (Original, sin normalizar)
         self.observation_space = spaces.Box(
             low=0, high=SCREEN_WIDTH,
             shape=(4,), dtype=np.float32
@@ -202,13 +201,13 @@ class DinoEnv(gym.Env):
         self.player.update(action)
 
         # -------------------------------------------------------
-        # GENERACIÓN DE OBSTÁCULOS POR FASES (Bootcamp Strategy)
+        # OBSTACLE GENERATION BY PHASES (Bootcamp Strategy)
         # -------------------------------------------------------
         if len(self.obstacles) == 0:
             
-            # --- FASE 1: APRENDER A SALTAR ---
-            # Solo Cactus (Pequeños y Grandes).
-            # Objetivo: Que el agente domine el salto sin distracciones aéreas.
+            # --- PHASE 1: LEARN TO JUMP ---
+            # Only Cacti (Small and Large).
+            # Objective: The agent should master jumping without aerial distractions.
             if self.curriculum_phase == 1:
                 choice = random.randint(0, 1)
                 if choice == 0:
@@ -216,15 +215,14 @@ class DinoEnv(gym.Env):
                 else:
                     self.obstacles.append(LargeCactus(LARGE_CACTUS))
             
-            # --- FASE 2: APRENDER A AGACHARSE (Bootcamp) ---
-            # Solo Pájaros con variación de altura.
-            # Objetivo: Romper el hábito de "saltar siempre". Si salta ante un
-            # pájaro alto, morirá. Debe aprender a agacharse.
+            # --- PHASE 2: LEARN TO DUCK (Bootcamp) ---
+            # Only Birds with height variation.
+            # Objective: Break the habit of "always jumping". If it jumps at a
+            # high bird, it will die. It must learn to duck.
             elif self.curriculum_phase == 2:
                 self.obstacles.append(Bird(BIRD, height_variation=True))
             
-            # --- FASE 3: GENERALIZACIÓN ---
-            # Todo mezclado. El agente debe usar lo aprendido en F1 y F2.
+            # --- PHASE 3: GENERALIZATION ---
             else: 
                 choice = random.randint(0, 2)
                 if choice == 0:
@@ -235,7 +233,7 @@ class DinoEnv(gym.Env):
                     self.obstacles.append(Bird(BIRD, height_variation=True))
 
         # -------------------------------------------------------
-        # FUNCIÓN DE RECOMPENSA (Survival Only)
+        # REWARD FUNCTION (Survival Only)
         # -------------------------------------------------------
         reward = 1 
         done = False
@@ -246,8 +244,6 @@ class DinoEnv(gym.Env):
                 reward = -100
                 done = True
         
-        # NOTA: No hay puntos extra por acciones específicas para evitar bias.
-
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
