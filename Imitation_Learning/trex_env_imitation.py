@@ -12,7 +12,7 @@ SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
-# --- Cargar imágenes ---
+# --- Load images ---
 ASSET_BASE = os.path.join(os.path.dirname(__file__), "..", "Assets")
 
 # 2. Define subfolders
@@ -34,7 +34,7 @@ BIRD = [pygame.image.load(os.path.join(BIRD_DIR, f"Bird{i}.png")) for i in range
 BG = pygame.image.load(os.path.join(OTHER_DIR, "Track.png"))
 
 # ==========================================================
-# CLASES DEL JUEGO
+# GAME CLASSES
 # ==========================================================
 class Dinosaur:
     X_POS = 80

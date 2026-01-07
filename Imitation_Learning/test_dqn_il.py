@@ -4,11 +4,11 @@ import time
 import os
 import numpy as np
 
-from trex_env import DinoEnv   # IMPORTANTE: entorno RL
+from trex_env import DinoEnv  
 
 
 # ======================================================
-# Q-Network (MISMA arquitectura que BC y DQN_IL)
+# Q-Network (SAME architecture as BC and DQN_IL)
 # ======================================================
 class QNetwork(nn.Module):
     def __init__(self, input_dim, output_dim):

@@ -8,8 +8,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.tensorboard import SummaryWriter
 
-from trex_env import DinoEnv   # IMPORTANTE: entorno RL, no imitation
-
+from trex_env import DinoEnv  
 
 # ======================================================
 # Configuration
@@ -25,7 +24,7 @@ BATCH_SIZE = 64
 BUFFER_SIZE = 100_000
 MIN_BUFFER_SIZE = 5_000
 
-EPS_START = 0.05     # BAJO porque partimos de experto
+EPS_START = 0.05     # Low because we start from expert
 EPS_END = 0.01
 EPS_DECAY = 0.9995
 
@@ -50,7 +49,7 @@ torch.manual_seed(SEED)
 
 
 # ======================================================
-# Q-Network (MISMA arquitectura que BC)
+# Q-Network (SAME architecture as BC)
 # ======================================================
 class QNetwork(nn.Module):
     def __init__(self, input_dim, output_dim):

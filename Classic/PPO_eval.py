@@ -5,30 +5,28 @@ import numpy as np
 from trex_env2 import DinoEnv
 
 # ----------------------------------------
-# Cargar modelo entrenado
+# Load trained model
 # ----------------------------------------
 model_path = "PPO_1/500000.zip"
 model = PPO.load(model_path)
 
 # ----------------------------------------
-# Crear entorno para render
+# Create environment for rendering
 # ----------------------------------------
-env = DinoEnv()  # Aquí necesitamos que render() funcione con pygame
+env = DinoEnv() 
 
-n_episodes = 5  # Número de episodios de evaluación
+n_episodes = 5  
 
 for ep in range(n_episodes):
     obs, info = env.reset()
     done = False
     total_reward = 0.0
     while not done:
-        # Obtener acción del modelo
         action, _states = model.predict(obs, deterministic=True)
         obs, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
         total_reward += reward
 
-        # Renderizar la ventana del juego
         env.render()
 
     print(f"Episode {ep+1}: Total Reward = {total_reward}")

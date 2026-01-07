@@ -7,7 +7,7 @@ from stable_baselines3.common.monitor import Monitor
 from trex_env2 import DinoEnv
 
 # ======================================================
-# Crear entorno con Monitor
+# Create environment with Monitor
 # ======================================================
 def make_env():
     env = DinoEnv()
@@ -15,7 +15,7 @@ def make_env():
     return env
 
 # ======================================================
-# Configuración
+# Configuration
 # ======================================================
 n_steps = 300_000
 checkpoint_dir = "./DQN_1/"
@@ -26,7 +26,7 @@ os.makedirs(checkpoint_dir, exist_ok=True)
 env = make_env()
 
 # ======================================================
-# Crear modelo DQN compatible con tu versión de SB3
+# Create DQN model 
 # ======================================================
 model = DQN(
     policy="MlpPolicy",
@@ -49,16 +49,13 @@ model = DQN(
 
     tensorboard_log=tensorboard_log,
 
-    # Aquí NO va "dueling=True". Para tu versión NO existe ese parámetro.
-    # Para dueling, tu versión de SB3 lo incluye automáticamente
-    # dentro de la arquitectura por defecto.
     policy_kwargs=dict(
         net_arch=[512, 512, 256]
     )
 )
 
 # ======================================================
-# Callback para checkpoints
+# Callback for checkpoints
 # ======================================================
 checkpoint_callback = CheckpointCallback(
     save_freq=20_000,
@@ -67,7 +64,7 @@ checkpoint_callback = CheckpointCallback(
 )
 
 # ======================================================
-# Entrenamiento
+# Training
 # ======================================================
 model.learn(
     total_timesteps=n_steps,

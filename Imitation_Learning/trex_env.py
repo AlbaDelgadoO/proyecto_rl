@@ -5,19 +5,19 @@ import gymnasium as gym
 from gymnasium import spaces
 import numpy as np
 
-# Inicializar pygame
+# Initialize pygame
 pygame.init()
 
-# Carpeta base de assets relativa al proyecto
+# Base asset folder relative to the project
 ASSET_BASE = os.path.join(os.path.dirname(__file__), "..", "Assets")
 
-# Subcarpetas
+# Subfolders
 DINO_DIR = os.path.join(ASSET_BASE, "Dino")
 CACTUS_DIR = os.path.join(ASSET_BASE, "Cactus")
 BIRD_DIR = os.path.join(ASSET_BASE, "Bird")
 OTHER_DIR = os.path.join(ASSET_BASE, "Other")
 
-# Constantes globales
+# Global constants
 SCREEN_HEIGHT = 600
 SCREEN_WIDTH = 1100
 SCREEN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -42,7 +42,7 @@ BG = pygame.image.load(os.path.join(OTHER_DIR, "Track.png"))
 
 
 # ------------------------
-# Clases del juego (Dino, Obstáculos, etc.)
+# Game classes (Dino, Obstacles, etc.)
 # ------------------------
 class Dinosaur:
     X_POS = 80
@@ -67,7 +67,7 @@ class Dinosaur:
         self.dino_rect.y = self.Y_POS
 
     def update(self, action):
-        # acción: 0 = nada, 1 = saltar, 2 = agacharse
+        # action: 0 = do nothing, 1 = jump, 2 = duck
         if action == 1 and not self.dino_jump:
             self.dino_duck = False
             self.dino_run = False
@@ -163,15 +163,15 @@ class Bird(Obstacle):
 
 
 # ------------------------
-# Entorno Gymnasium
+# Gymnasium Environment
 # ------------------------
 class DinoEnv(gym.Env):
     metadata = {"render_modes": ["human"], "render_fps": 30}
 
     def __init__(self):
         super(DinoEnv, self).__init__()
-        self.action_space = spaces.Discrete(3)  # 0: nada, 1: saltar, 2: agacharse
-        # Observación: posición del dino + primer obstáculo
+        self.action_space = spaces.Discrete(3)  # 0: do nothing, 1: jump, 2: duck
+        # Observation: dino position + first obstacle
         self.observation_space = spaces.Box(
             low=0, high=SCREEN_WIDTH,
             shape=(4,), dtype=np.float32
@@ -185,7 +185,7 @@ class DinoEnv(gym.Env):
         self.game_speed = 20
         self.points = 0
 
-        # posiciones del suelo
+        # ground positions
         self.x_pos_bg = 0
         self.y_pos_bg = 380
 
@@ -195,7 +195,7 @@ class DinoEnv(gym.Env):
     def step(self, action):
         self.player.update(action)
 
-        # Generar obstáculos
+        # Generate obstacles
         if len(self.obstacles) == 0:
             choice = random.randint(0, 2)
             if choice == 0:
@@ -214,12 +214,11 @@ class DinoEnv(gym.Env):
                 reward = -100
                 done = True
             elif action == 0:
-                reward += 0.25  # Recompensa pequeña por correr sin hacer nada
+                reward += 0.25  # Small reward for running without doing anything
             elif action == 1:
-                reward += 1  # Recompensa por saltar
+                reward += 1  # Reward for jumping
             elif action == 2:
-                reward += 0.5  # Recompensa por agacharse
-
+                reward += 0.5  # Reward for ducking
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed += 1
@@ -228,7 +227,7 @@ class DinoEnv(gym.Env):
         return obs, reward, done, False, {}
 
     def _get_obs(self):
-        # Dino Y, Dino JumpVel, primer obstáculo X, tipo obstáculo
+        # Dino Y, Dino JumpVel, first obstacle X, obstacle type
         if len(self.obstacles) > 0:
             obstacle = self.obstacles[0]
             return np.array([self.player.dino_rect.y,

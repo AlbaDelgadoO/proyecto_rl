@@ -7,7 +7,7 @@ from stable_baselines3.common.monitor import Monitor
 from trex_env2 import DinoEnv  
 
 # -----------------------------
-# Directorios para modelos y logs
+# Directories for models and logs
 # -----------------------------
 ALGORITHM = "PPO"
 models_dir = "PPO_1"
@@ -17,21 +17,21 @@ os.makedirs(models_dir, exist_ok=True)
 os.makedirs(log_dir, exist_ok=True)
 
 # -----------------------------
-# Crear el environment con Monitor
+# Create environment with Monitor
 # -----------------------------
 env = DinoEnv()
 env = Monitor(env, log_dir)
 
 # -----------------------------
-# Buscar último modelo guardado
+# Search for the latest saved model
 # -----------------------------
 checkpoints = [f for f in os.listdir(models_dir) if f.endswith(".zip")]
 if checkpoints:
     latest_model_path = os.path.join(models_dir, sorted(checkpoints, key=lambda x: int(x.split(".zip")[0]))[-1])
-    print(f"Cargando modelo existente: {latest_model_path}")
+    print(f"Loading existing model: {latest_model_path}")
     model = PPO.load(latest_model_path, env=env)
 else:
-    print("No se encontró modelo previo, creando uno nuevo")
+    print("No previous model found, creating a new one")
     model = PPO(
         "MlpPolicy",
         env,
@@ -44,7 +44,7 @@ else:
     )
 
 # -----------------------------
-# Entrenamiento
+# Training
 # -----------------------------
 TIMESTEPS = 50000 
 NUM_ITERATIONS = 10
@@ -56,10 +56,10 @@ for i in range(1, NUM_ITERATIONS + 1):
         tb_log_name=ALGORITHM
     )
     model.save(f"{models_dir}/{TIMESTEPS * i}")
-    print(f"Modelo guardado: {models_dir}/{TIMESTEPS * i}")
+    print(f"Model saved: {models_dir}/{TIMESTEPS * i}")
 
 # -----------------------------
-# Evaluación del agente
+# Agent evaluation
 # -----------------------------
 mean_reward, std_reward = evaluate_policy(model, env, n_eval_episodes=10)
 print(f"Mean reward: {mean_reward:.2f} ± {std_reward:.2f}")
